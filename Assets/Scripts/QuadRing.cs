@@ -20,7 +20,8 @@ public class QuadRing : MonoBehaviour
     
     private void OnDrawGizmosSelected()
     {
-        DrawWireCircle(transform.position, transform.rotation,1);
+        DrawWireCircle(transform.position, transform.rotation,radiusInner, angularSegments);
+        DrawWireCircle(transform.position, transform.rotation,radiusOuter, angularSegments);
     }
 
     public void DrawWireCircle(Vector3 pos, Quaternion rot, float radius, int detail = 32)
@@ -36,7 +37,7 @@ public class QuadRing : MonoBehaviour
                 Mathf.Sin(angRad) * radius
             );
 
-            points3D[i] =pos +  rot * point2D;
+            points3D[i] = pos +  rot * point2D;
         }
 
         for (int i = 0; i < detail; i++)
