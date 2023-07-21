@@ -16,7 +16,7 @@ public class QuadRing : MonoBehaviour
     [Range(3,256)]
     [SerializeField] int angularSegments = 3;
 
-    private const float TAU = 6.28318530718f;
+    private const float TAU = 6.2831853071f;
     
     private void OnDrawGizmosSelected()
     {
