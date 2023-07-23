@@ -1049,15 +1049,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8031807040346714560, guid: 1d02ed4c5e097594488be4cbeb455ad4, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 8.83
+      value: 4.964
       objectReference: {fileID: 0}
     - target: {fileID: 8031807040346714560, guid: 1d02ed4c5e097594488be4cbeb455ad4, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.52
+      value: -1.321
       objectReference: {fileID: 0}
     - target: {fileID: 8031807040346714560, guid: 1d02ed4c5e097594488be4cbeb455ad4, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -2.191
+      value: -1.06
       objectReference: {fileID: 0}
     - target: {fileID: 8031807040346714560, guid: 1d02ed4c5e097594488be4cbeb455ad4, type: 3}
       propertyPath: m_LocalRotation.w
@@ -1237,6 +1237,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2d6bfcc6fdf5b764d90579191fa5a156, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  radiusInner: 0
+  radiusInner: 1.72
   thickness: 0
-  angularSegments: 3
+  angularSegments: 9
