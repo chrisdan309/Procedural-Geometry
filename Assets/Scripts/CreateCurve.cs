@@ -10,65 +10,108 @@ public class CreateCurve : MonoBehaviour
 {
     [Range(0.0f, 1.0f)]
     public float T;
-    [Range(2,32)]
-    public int roadSegments = 4;
+    [Range(2,128)]
+    public int roadControls = 4;
+    public bool automaticMove = true;
+    public bool drawGizmos = true;
+
+    [Range(0.1f, 0.5f)]
+    public float cubeVelocity = 0.5f;
+    public Material cubeMaterial;
+    GameObject cubeObject;
 
     private int controlPointsCount = 4;
     private List<Transform> controlPoints = new List<Transform>();
-    GameObject sphere;
        
     Mesh mesh;
 
-    private void Awake()
+    private void InitMesh()
     {
         mesh = new Mesh();
         mesh.name = "Procedural Road";
         GetComponent<MeshFilter>().sharedMesh = mesh;
     }
 
+    private void Awake()
+    {
+        InitMesh();
+    }
+
     void Start()
     {
         T = 0;
         controlPoints.Clear();
-       for (int i = 0; i < controlPointsCount; i++)
+        controlPointsCount = gameObject.transform.childCount;
+        for (int i = 0; i < controlPointsCount; i++)
         {
             controlPoints.Add(gameObject.transform.GetChild(i));
         }
-       controlPointsCount = gameObject.transform.childCount;
+        cubeObject = GameObject.CreatePrimitive(PrimitiveType.Cube);
+        cubeObject.GetComponent<MeshRenderer>().material = cubeMaterial;
     }
 
-    // Update is called once per frame
-    void Update()
+    private void RenderMesh()
     {
         mesh.Clear();
         List<Vector3> verts = new List<Vector3>();
-        for(int i =0; i < roadSegments; i++) { 
-            OrientedPoint op = GetBezierOn((float)i / (roadSegments-1.0f));
+        for (int i = 0; i < roadControls; i++)
+        {
+            OrientedPoint op = GetBezierOn((float)i / (roadControls - 1.0f));
             verts.Add(op.LocalToWorld(Vector3.right * -1.5f));
             verts.Add(op.LocalToWorld(-Vector3.up * 0.2f + Vector3.right * -1.0f));
             verts.Add(op.LocalToWorld(-Vector3.up * 0.2f + Vector3.right * 1.0f));
             verts.Add(op.LocalToWorld(Vector3.right * 1.5f));
         }
         List<int> triangles = new List<int>();
-        for (int i = 0; i < roadSegments - 1; i++)
+        for (int i = 0; i < roadControls - 1; i++)
         {
             int root = i * 4;
             int rootNext = (i + 1) * 4;
-            
+
             triangles.Add(root);
             triangles.Add(rootNext);
             triangles.Add(root + 3);
             triangles.Add(rootNext);
             triangles.Add(rootNext + 3);
             triangles.Add(root + 3);
+            triangles.Add(root + 1);
+            triangles.Add(rootNext);
+            triangles.Add(root);
+            triangles.Add(root + 1);
+            triangles.Add(rootNext + 1);
+            triangles.Add(rootNext);
+            triangles.Add(root + 3);
+            triangles.Add(rootNext + 3);
+            triangles.Add(root + 2);
+            triangles.Add(root + 2);
+            triangles.Add(rootNext + 3);
+            triangles.Add(rootNext + 2);
+            triangles.Add(root + 1);
+            triangles.Add(rootNext + 2);
+            triangles.Add(rootNext + 1);
+            triangles.Add(root + 1);
+            triangles.Add(root + 2);
+            triangles.Add(rootNext + 2);
         }
         mesh.SetVertices(verts);
         mesh.SetTriangles(triangles, 0);
         mesh.RecalculateNormals();
     }
+    void Update() {
+        RenderMesh();
+        if (automaticMove)
+        {
+            T += Time.deltaTime * cubeVelocity;
+            if (T > 1.0f) T = 0.0f;
+        }
+        cubeObject.transform.position = GetBezierOn(T).position;
+        cubeObject.transform.position += Vector3.up * 0.5f;
+        cubeObject.transform.rotation = GetBezierOn(T).rotation;
+    }
 
     public void OnDrawGizmos()
     {
+        if (!drawGizmos) return;
         Gizmos.color = Color.magenta;
         for (int i = 0; i < gameObject.transform.childCount; i++)
         {
@@ -76,15 +119,10 @@ public class CreateCurve : MonoBehaviour
         }
         Gizmos.color = Color.cyan;
         Vector3[] verts = new Vector3[4];
-        int[] vertsIndex = new int[4];
-        vertsIndex[0] = 1;
-        vertsIndex[1] = 2;
-        vertsIndex[2] = 3;
-        vertsIndex[3] = 0;
-        for (int j = 0; j < roadSegments; j++)
+        int[] vertsIndex = new int[4] { 1,2,3,0};
+        for (int j = 0; j < roadControls; j++)
         {
-            float test = (float)j / (roadSegments - 1.0f);
-            OrientedPoint op = GetBezierOn(test);
+            OrientedPoint op = GetBezierOn((float)j / (roadControls - 1.0f));
             verts[0] = op.LocalToWorld(Vector3.right * -1.5f);
             verts[1] = op.LocalToWorld(Vector3.right * 1.5f);
             verts[2] = op.LocalToWorld(-Vector3.up * 0.2f + Vector3.right * 1.0f);
@@ -119,26 +157,5 @@ public class CreateCurve : MonoBehaviour
             upperBound--;
         }
         return new OrientedPoint(bezierPoints[0], tangent);
-    }
-    private void CalculateDeCasteljouAlgorithm()
-    {
-        Vector3[] bezierPoints = new Vector3[gameObject.transform.childCount];
-        if (bezierPoints == null) throw new ArgumentNullException(nameof(bezierPoints));
-        
-        int upperBound = gameObject.transform.childCount;
-        for (int i = 0; i < upperBound; i++)
-        {
-            //bezierPoints[i] = _controlPoints[i].position;
-        }
-        while (upperBound > 0)
-        {
-            for (int i = 0; i < upperBound - 1; i++)
-            {
-                bezierPoints[i] = Vector3.Lerp(bezierPoints[i], bezierPoints[i + 1], T);
-            }
-            upperBound--;
-        }
-
-        sphere.transform.position = bezierPoints[0];
     }
 }
