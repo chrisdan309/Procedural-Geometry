@@ -13,21 +13,21 @@ public class QuadRing : MonoBehaviour
     [Range(3,256)]
     [SerializeField] int angularSegmentCount = 3;
 
-    private Mesh mesh;
-    private float radiusOuter => radiusInner + thickness;
+    private Mesh _mesh;
+    private float RadiusOuter => radiusInner + thickness;
     private int VertexCount => angularSegmentCount * 2;
 
     private void OnDrawGizmosSelected()
     {
         Gizmosfs.DrawWireCircle(transform.position, transform.rotation,radiusInner, angularSegmentCount);
-        Gizmosfs.DrawWireCircle(transform.position, transform.rotation,radiusOuter, angularSegmentCount);
+        Gizmosfs.DrawWireCircle(transform.position, transform.rotation,RadiusOuter, angularSegmentCount);
     }
 
     private void Awake()
     {
-        mesh = new Mesh();
-        mesh.name = "QuadRing";
-        GetComponent<MeshFilter>().sharedMesh = mesh;
+        _mesh = new Mesh();
+        _mesh.name = "QuadRing";
+        GetComponent<MeshFilter>().sharedMesh = _mesh;
         
     }
 
@@ -35,17 +35,22 @@ public class QuadRing : MonoBehaviour
     
     void GenerateMesh()
     {
-        mesh.Clear();
+        _mesh.Clear();
 
         int vCount = VertexCount;
         List<Vector3> vertices = new List<Vector3>();
+        List<Vector3> normals = new List<Vector3>();
+        
         for (int i = 0; i < angularSegmentCount; i++)
         {
             float t = i / (float )angularSegmentCount;
-            float angRad = t * Mathfs.TAU;
+            float angRad = t * Mathfs.Tau;
             Vector2 dir = Mathfs.GetUnitVectorByAngle(angRad);
-            vertices.Add(dir * radiusOuter);
+            vertices.Add(dir * RadiusOuter);
             vertices.Add(dir * radiusInner);
+            
+            normals.Add((Quaternion.Inverse(transform.rotation)* Vector3.forward).normalized);
+            normals.Add((Quaternion.Inverse(transform.rotation)* Vector3.forward).normalized);
         }
 
     
@@ -69,7 +74,8 @@ public class QuadRing : MonoBehaviour
         }
         
         
-        mesh.SetVertices(vertices);
-        mesh.SetTriangles(triangleIndices, 0);
+        _mesh.SetVertices(vertices);
+        _mesh.SetTriangles(triangleIndices, 0);
+        _mesh.SetNormals(normals);
     }
 }

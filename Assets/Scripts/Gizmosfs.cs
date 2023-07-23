@@ -10,7 +10,7 @@ public class Gizmosfs
         for (int i = 0; i < detail; i++)
         {
             float t = i / (float )detail;
-            float angRad = t * Mathfs.TAU;
+            float angRad = t * Mathfs.Tau;
 
             Vector2 point2D = Mathfs.GetUnitVectorByAngle(angRad) * radius;
 
