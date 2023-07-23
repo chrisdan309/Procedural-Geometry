@@ -8,7 +8,7 @@ public class CreateCurve : MonoBehaviour
     private List<Transform> _controlPoints = new List<Transform>();
     [Range(0.0f, 1.0f)]
     public float t;
-    public GameObject sphere;
+    private GameObject sphere;
     
     
     void Start()
@@ -19,7 +19,7 @@ public class CreateCurve : MonoBehaviour
             _controlPoints.Add(gameObject.transform.GetChild(i));
         }
 
-        sphere = Instantiate(sphere, _controlPoints[0].position, Quaternion.identity);
+        sphere = GameObject.CreatePrimitive(PrimitiveType.Sphere);
         t = 0;
 
     }
@@ -29,6 +29,8 @@ public class CreateCurve : MonoBehaviour
     {
 
         CalculateDeCasteljouAlgorithm();
+        t += Time.deltaTime * 0.1f;
+        if (t >= 1.0f) { t = 0; }
     }
 
     private void CalculateDeCasteljouAlgorithm()
