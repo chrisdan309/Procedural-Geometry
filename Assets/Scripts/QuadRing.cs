@@ -16,11 +16,12 @@ public class QuadRing : MonoBehaviour
     [Range(3,256)]
     [SerializeField] int angularSegments = 3;
 
-    private const float TAU = 6.28318530718f;
+    private const float TAU = 6.2831853071f;
     
     private void OnDrawGizmosSelected()
     {
-        DrawWireCircle(transform.position, transform.rotation,1);
+        DrawWireCircle(transform.position, transform.rotation,radiusInner, angularSegments);
+        DrawWireCircle(transform.position, transform.rotation,radiusOuter, angularSegments);
     }
 
     public void DrawWireCircle(Vector3 pos, Quaternion rot, float radius, int detail = 32)
@@ -36,7 +37,7 @@ public class QuadRing : MonoBehaviour
                 Mathf.Sin(angRad) * radius
             );
 
-            points3D[i] =pos +  rot * point2D;
+            points3D[i] = pos +  rot * point2D;
         }
 
         for (int i = 0; i < detail; i++)
