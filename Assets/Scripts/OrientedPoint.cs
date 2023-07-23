@@ -22,9 +22,4 @@ public struct OrientedPoint
         return position + rotation * point;
     }
 
-    public Vector3 LocalToWorldVector(Vector3 point)
-    {
-        return rotation * point;
-    }
-
 }
