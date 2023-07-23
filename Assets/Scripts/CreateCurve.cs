@@ -64,6 +64,7 @@ public class CreateCurve : MonoBehaviour
         }
         mesh.SetVertices(verts);
         mesh.SetTriangles(triangles, 0);
+        mesh.RecalculateNormals();
     }
 
     public void OnDrawGizmos()
@@ -82,7 +83,7 @@ public class CreateCurve : MonoBehaviour
         vertsIndex[3] = 0;
         for (int j = 0; j < roadSegments; j++)
         {
-            float test = (float)j / (roadSegments - 1);
+            float test = (float)j / (roadSegments - 1.0f);
             OrientedPoint op = GetBezierOn(test);
             verts[0] = op.LocalToWorld(Vector3.right * -1.5f);
             verts[1] = op.LocalToWorld(Vector3.right * 1.5f);
