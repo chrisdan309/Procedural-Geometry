@@ -152,7 +152,7 @@ Light:
   m_Type: 2
   m_Shape: 0
   m_Color: {r: 0.8355444, g: 0.4273318, b: 0.9339623, a: 1}
-  m_Intensity: 20.64
+  m_Intensity: 56.1
   m_Range: 25.8
   m_SpotAngle: 30
   m_InnerSpotAngle: 21.80208
@@ -210,7 +210,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 49718979}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 6.24, y: 4.74, z: -10.73}
+  m_LocalPosition: {x: 6.24, y: 9.6, z: -2.26}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -307,10 +307,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 22a8a02d03c650543868eb4de7109164, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  T: 0
-  roadControls: 64
+  T: 0.459
+  roadControls: 20
   automaticMove: 1
-  drawGizmos: 0
+  drawGizmos: 1
   cubeVelocity: 0.5
   cubeMaterial: {fileID: 2100000, guid: 7c96260861c8bb148a915ff07efcd6be, type: 2}
 --- !u!23 &474131140

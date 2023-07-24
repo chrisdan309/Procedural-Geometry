@@ -95,7 +95,6 @@ public class CreateCurve : MonoBehaviour
         }
         mesh.SetVertices(verts);
         mesh.SetTriangles(triangles, 0);
-        mesh.RecalculateNormals();
     }
     void Update() {
         RenderMesh();
